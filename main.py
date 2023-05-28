@@ -4,11 +4,11 @@ import pytesseract as pytesseract
 from ultralytics import YOLO
 from cascadeutils import generate_negative_description_file
 
-
-#wczytanie
+# wczytanie
 image = cv2.imread(r"C:\Users\48516\Downloads\2021-Nissan-Qashqai-front-view-1200x800.jpg")
 car_cascade = cv2.CascadeClassifier('cascade/cascade.xml')
 model = YOLO("yolov8m.pt")
+
 
 def processPlate(image=image):
     image = imutils.resize(image, width=500)
@@ -62,13 +62,10 @@ def processPlate(image=image):
     cv2.destroyAllWindows()
 
 
-
-
 def carsDetectionHAAR():
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     cars = car_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
     if len(cars) > 0:
-
 
         # Znajdź największy ROI
         max_area = 0
@@ -100,10 +97,13 @@ def carsDetectionHAAR():
 
 
 def carsDetectionYOLO():
-    results = model.predict(image)
-    result = results[0]
-    print(result.names)
+    results = model.predict(source=r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images", conf=0.25, save_crop=True, classes=2)
+    for r in results:
+        boxes = r.boxes
+        masks = r.masks
+        probs = r.probs
+
 
 carsDetectionYOLO()
-#carsDetectionHAAR()
-#processPlate(image)
+# carsDetectionHAAR()
+# processPlate(image)
