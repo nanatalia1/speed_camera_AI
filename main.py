@@ -3,7 +3,7 @@ import imutils as imutils
 import pytesseract as pytesseract
 from ultralytics import YOLO
 from cascadeutils import generate_negative_description_file
-path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\000562_jpg.rf.3ee4ad1f9be183152b51f5053bda73a7.jpg"
+path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\000038_jpg.rf.990c7e7e8d4c1e04aede28fc6ba421b6.jpg"
 
 # wczytanie
 image = cv2.imread(path)
@@ -100,6 +100,9 @@ def carsDetectionYOLO():
     results = model.predict(source=path, conf=0.25, save_crop=True, classes=2)
     for r in results:
         boxes = r.boxes.xywh
+        if boxes.size(dim=0):
+            print("Nie wykryto samochodu")
+            return
         for box in boxes:
             roi = image[round(box[1].item()):round(box[1].item())+round(box[3].item()), round(box[0].item()):round(box[0].item())+round(box[2].item())]
             cv2.rectangle(image, (round(box[0].item()), round(box[1].item())), (round(box[1].item())+round(box[3].item()), round(box[0].item())+round(box[2].item())), (0, 255, 0), 2)
