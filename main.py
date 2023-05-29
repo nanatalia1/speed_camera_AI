@@ -100,7 +100,7 @@ def carsDetectionYOLO():
     results = model.predict(source=path, conf=0.25, save_crop=True, classes=2)
     for r in results:
         boxes = r.boxes.xywh
-        if boxes.size(dim=0):
+        if boxes.size(dim=0) == 0:
             print("Nie wykryto samochodu")
             return
         for box in boxes:
