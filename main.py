@@ -2,8 +2,10 @@ import cv2
 import imutils as imutils
 import pytesseract as pytesseract
 from ultralytics import YOLO
+import os
 from cascadeutils import generate_negative_description_file
-path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\000038_jpg.rf.990c7e7e8d4c1e04aede28fc6ba421b6.jpg"
+
+path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images"
 
 # wczytanie
 image = cv2.imread(path)
@@ -62,6 +64,7 @@ def processPlate(image=image):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+
 def carsDetectionHAAR():
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     cars = car_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
@@ -96,23 +99,28 @@ def carsDetectionHAAR():
         print("Nie wykryto samochodów na zdjęciu!")
 
 
-def carsDetectionYOLO():
-    results = model.predict(source=path, conf=0.25, save_crop=True, classes=2)
-    for r in results:
-        boxes = r.boxes.xywh
-        if boxes.size(dim=0) == 0:
-            print("Nie wykryto samochodu")
-            return
-        for box in boxes:
-            roi = image[round(box[1].item()):round(box[1].item())+round(box[3].item()), round(box[0].item()):round(box[0].item())+round(box[2].item())]
-            cv2.rectangle(image, (round(box[0].item()), round(box[1].item())), (round(box[1].item())+round(box[3].item()), round(box[0].item())+round(box[2].item())), (0, 255, 0), 2)
-            cv2.imshow("ROI", roi)
-            cv2.imshow("Obraz", image)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-            processPlate(roi)
+def singleImageCarsDetectionYOLO():
+    for file in os.scandir(path):
+        image = cv2.imread(file.path)
+        results = model.predict(source=file.path, conf=0.25, save_crop=True, classes=2)
+        for r in results:
+            boxes = r.boxes.xywh
+            if boxes.size(dim=0) == 0:
+                print("Nie wykryto samochodu")
+            for box in boxes:
+                roi = image[round(box[1].item()):round(box[1].item()) + round(box[3].item()),
+                      round(box[0].item()):round(box[0].item()) + round(box[2].item())]
+                cv2.rectangle(image, (round(box[0].item()), round(box[1].item())), (
+                    round(box[1].item()) + round(box[3].item()), round(box[0].item()) + round(box[2].item())),
+                              (0, 255, 0),
+                              2)
+                cv2.imshow("ROI", roi)
+                cv2.imshow("Obraz", image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+                # processPlate(roi)
 
 
-carsDetectionYOLO()
+singleImageCarsDetectionYOLO()
 # carsDetectionHAAR()
 # processPlate(image)
