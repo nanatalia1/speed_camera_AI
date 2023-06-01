@@ -1,0 +1,12 @@
+C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\002916_jpg.rf.1abdb5b090b7c361fd4d1232012daa01.jpg
+
+
+C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\002780_jpg.rf.972f355c1aef93efc8c1a867424d95d4.jpg
+
+
+C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\002560_jpg.rf.a7601fb54b404e60ea96e2306dc572ad.jpg
+
+
+C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\002131_jpg.rf.3ddceb8801e7adcff708c6c96470d593.jpg
+
+
