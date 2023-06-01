@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import os
 from cascadeutils import generate_negative_description_file
 
-path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\002149_jpg.rf.810c92f66697e3a86c2f9f35dc1ae0ea.jpg"
+path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\003312_jpg.rf.888faf1713c1cb18376a4de17efd25cc.jpg"
 
 # wczytanie
 image = cv2.imread(path)
