@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import os
 from cascadeutils import generate_negative_description_file
 
-path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images\003312_jpg.rf.888faf1713c1cb18376a4de17efd25cc.jpg"
+path = r"C:\Users\mdaniele\PycharmProjects\ai_proj\Stanford_Car.v10-accurate-model_mergedallclasses-augmented_by3x.yolov8\test\images"
 
 # wczytanie
 image = cv2.imread(path)
@@ -100,24 +100,25 @@ def carsDetectionHAAR():
 
 
 def singleImageCarsDetectionYOLO():
-    image = cv2.imread(path)
-    results = model.predict(source=path, conf=0.5, save_crop=True, classes=2)
-    for r in results:
-        boxes = r.boxes.xywh
-        if boxes.size(dim=0) == 0:
-            print("Nie wykryto samochodu")
-        for box in boxes:
-            roi = image[round(box[1].item()):round(box[1].item()) + round(box[3].item()),
-                  round(box[0].item()):round(box[0].item()) + round(box[2].item())]
-            cv2.rectangle(image, (round(box[0].item()), round(box[1].item())), (
-                round(box[1].item()) + round(box[3].item()), round(box[0].item()) + round(box[2].item())),
-                          (0, 255, 0),
-                          2)
-            cv2.imshow("ROI", roi)
-            cv2.imshow("Obraz", image)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-            processPlate(roi)
+    for file in os.scandir(path):
+        image = cv2.imread(file.path)
+        results = model.predict(source=file.path, conf=0.5, save_crop=True, classes=2)
+        for r in results:
+            boxes = r.boxes.xyxy
+            if boxes.size(dim=0) == 0:
+                print("Nie wykryto samochodu")
+            for box in boxes:
+                roi = image[round(box[1].item()):round(box[3].item()),
+                      round(box[0].item()):round(box[2].item())]
+                cv2.rectangle(image, (round(box[0].item()), round(box[1].item())), (
+                    round(box[1].item()) + round(box[3].item()), round(box[0].item()) + round(box[2].item())),
+                              (0, 255, 0),
+                              2)
+                cv2.imshow("ROI", roi)
+                cv2.imshow("Obraz", image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+                # processPlate(roi)
 
 
 singleImageCarsDetectionYOLO()
